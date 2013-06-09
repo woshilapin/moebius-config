@@ -1,0 +1,23 @@
+<VirtualHost *:443>
+	ServerName tuziwo.no-ip.org
+	DocumentRoot /srv/www/
+
+	AddType application/x-x509-ca-cert .pem
+
+	<Directory /srv/www/owncloud>
+		Options -ExecCGI -Indexes
+
+		# For .htaccess
+		AllowOverride All
+
+		# SSL configuration
+		SSLEngine On
+		SSLCertificateFile /srv/ssl/owncloud/owncloud-cert.pem
+		SSLCertificateKeyFile /srv/ssl/owncloud/owncloud-key.nopass.pem
+		SSLProtocol all -SSLv2
+	</Directory>
+
+	# Error logging
+	ErrorLog syslog
+	LogLevel info
+</VirtualHost>

@@ -1,9 +1,26 @@
 #!/bin/bash
 
-CUR_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $CUR_PATH/functions.sh
+# Exit if any command fail
+set -e
+
+set +o xtrace
+ROOT_PATH=$( cd -P -- "$(dirname -- "$0")" && pwd -P )
+source $ROOT_PATH/functions.sh
 
 cd $HOME
+
+if [ -z $SSH_AGENT_PID ]
+then
+	print_info "You must run a SSH agent for this script."
+	print_info "$> ssh-agent 'bash "$0"'"
+	print_err "No SSH agent found."
+fi
+if [ \! -f ~/.ssh/woshilapin@gmail.com.rsa ]
+then
+	print_info "You must upload 'woshilapin' SSH keys on 'tuziwo'"
+	print_info "Put 'woshilapin' SSH keys in '/home/woshilapin/.ssh'"
+	print_err "No 'woshilapin' SSH key found."
+fi
 
 ### Add ssh keys
 print_info "Add SSH private key to the agent"

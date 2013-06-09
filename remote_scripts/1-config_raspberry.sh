@@ -1,6 +1,11 @@
 #!/bin/bash
 
-source $SCRIPTS_PATH/functions.sh
+# Exit if any command fail
+set -e
+
+set +o xtrace
+ROOT_PATH=$( cd -P -- "$(dirname -- "$0")" && pwd -P )
+source $ROOT_PATH/functions.sh
 
 print_info "Change the root password"
 if test `whoami` = 'root'

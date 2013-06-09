@@ -1,6 +1,11 @@
 #!/bin/bash
 
-source $SCRIPTS_PATH/functions.sh
+# Exit if any command fail
+set -e
+
+set +o xtrace
+ROOT_PATH=$( cd -P -- "$(dirname -- "$0")" && pwd -P )
+source $ROOT_PATH/functions.sh
 
 ### Install man-pages
 print_info "Installing manpages"
@@ -17,5 +22,5 @@ print_info "Installing zsh"
 yes | apt-get install zsh zsh-doc
 
 ### Install Vim
-print_info "Installing vim (with exiberant-ctags)"
+print_info "Installing vim (with 'exuberant-ctags' and 'cscope')"
 yes | apt-get install vim vim-doc exuberant-ctags cscope
