@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Exit if any command fail
+set -e
+
+set +o xtrace
+ROOT_PATH=$( cd -P -- "$(dirname -- "$0")" && pwd -P )
+IMG_PATH="$ROOT_PATH/../img"
+UNZIP_PATH="$ROOT_PATH/../unzip"
+source $ROOT_PATH/functions.sh
+
 print_info "Choosing the name of the device"
 df -h
 print_info "Enter the name of the device [/dev/disk1s1]: \c"
@@ -41,14 +50,22 @@ fi
 print_info "Uncompressing the image"
 BASE="${CHOSEN_FILE%.[^.]*}"
 EXT="${CHOSEN_FILE:${#BASE} + 1}"
-mkdir $UNZIP_PATH
+mkdir -p $UNZIP_PATH
 cd $UNZIP_PATH
 case $EXT in
 	"zip")
 		unzip $IMG_PATH/$CHOSEN_FILE
 		;;
 	"gz")
-		tar xvzf $IMG_PATH/$CHOSEN_FILE
+		IMG_FILE=`echo $CHOSEN_FILE | sed 's/\.gz$//g'`
+		BASE_IMG="${IMG_FILE%.[^.]*}"
+		EXT_IMG="${IMG_FILE:${#BASE_IMG} + 1}"
+		if [ $EXT_IMG == "tar" ]
+		then
+			tar xvzf $IMG_PATH/$CHOSEN_FILE
+		else
+			gunzip -c $IMG_PATH/$CHOSEN_FILE > $UNZIP_PATH/$IMG_FILE
+		fi
 		;;
 	"bz2")
 		tar xvjf $IMG_PATH/$CHOSEN_FILE
@@ -66,3 +83,7 @@ sudo diskutil eject $DEVICE
 print_info "The card has been ejected"
 print_info "Please plug the SD card into your raspberrypi then press ENTER"
 read NULL
+
+### Clean
+cd $ROOT_PATH
+rm -Rf $UNZIP_PATH
