@@ -9,6 +9,11 @@ IMG_PATH="$ROOT_PATH/../img"
 UNZIP_PATH="$ROOT_PATH/../unzip"
 source $ROOT_PATH/functions.sh
 
+if [ -d $UNZIP_PATH ]
+then
+	rm -Rf $UNZIP_PATH
+fi
+
 print_info "Choosing the name of the device"
 df -h
 print_info "Enter the name of the device [/dev/disk1s1]: \c"
