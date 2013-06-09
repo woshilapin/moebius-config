@@ -8,7 +8,7 @@ ROOT_PATH=$( cd -P -- "$(dirname -- "$0")" && pwd -P )
 source $ROOT_PATH/functions.sh
 
 print_info "Change the root password"
-if test `whoami` = 'root'
+if [ `whoami` == 'root' ]
 then
 	passwd
 else
@@ -21,7 +21,6 @@ useradd \
 	--comment "woshilapin" \
 	--home-dir /home/woshilapin \
 	--create-home \
-	--shell /bin/zsh \
 	--user-group \
 	woshilapin
 print_info "Change the password for 'woshilapin' user"
