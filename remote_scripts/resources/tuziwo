@@ -4,17 +4,17 @@
 
 	AddType application/x-x509-ca-cert .pem
 
+	# SSL configuration
+	SSLEngine On
+	SSLCertificateFile /srv/ssl/certs/tuziwo.cert.pem
+	SSLCertificateKeyFile /srv/ssl/private/tuziwo.key.nopass.pem
+	SSLProtocol all -SSLv2
+
 	<Directory /srv/www/owncloud>
 		Options -ExecCGI -Indexes
 
 		# For .htaccess
 		AllowOverride All
-
-		# SSL configuration
-		SSLEngine On
-		SSLCertificateFile /srv/ssl/owncloud/owncloud-cert.pem
-		SSLCertificateKeyFile /srv/ssl/owncloud/owncloud-key.nopass.pem
-		SSLProtocol all -SSLv2
 	</Directory>
 
 	# Error logging
